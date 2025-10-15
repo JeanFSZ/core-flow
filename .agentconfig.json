@@ -1,0 +1,27 @@
+{
+  "agent_name": "Coreflow Assistant",
+  "priority_files": [
+    "agent.md",
+    "context.md",
+    "prompts/",
+    "knowledge/",
+    "agents/"
+  ],
+  "ignore_patterns": [
+    "node_modules/",
+    "dist/",
+    "*.log",
+    "tmp/"
+  ],
+  "coding_guidelines": {
+    "primary_language": "typescript",
+    "frameworks": ["nestjs", "fastapi", "springboot"],
+    "testing": ["jest", "pytest", "junit"]
+  },
+  "style": {
+    "naming": "camelCase",
+    "comments": "jsdoc",
+    "formatter": "prettier"
+  }
+}
+
