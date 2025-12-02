@@ -301,21 +301,25 @@ graph TB
         end
     end
     
-    subgraph "Production Environment"
-        subgraph "Cloud Infrastructure"
-            P1[Kubernetes Cluster]
-            P2[Load Balancer]
-            P3[Database Cluster]
-            P4[Redis Cluster]
-            P5[Kafka Cluster]
+    subgraph "Production Server (VPS/Dedicated)"
+        subgraph "Docker Compose Stack"
+            P1[PostgreSQL<br/>Port: 5432]
+            P2[Redis<br/>Port: 6379]
+            P3[Kafka + Zookeeper<br/>Port: 9092]
+            P4[pgAdmin<br/>Port: 5050]
+            P5[Kafka UI<br/>Port: 8080]
         end
         
-        subgraph "Microservices"
-            M1[CMS Service<br/>Pod]
-            M2[API Gateway<br/>Pod]
-            M3[AI Service<br/>Pod]
-            M4[Blockchain Service<br/>Pod]
-            M5[Payments Service<br/>Pod]
+        subgraph "Microservices (PM2/Systemd)"
+            M1[CMS Service<br/>Port: 3001<br/>PM2 Process]
+            M2[API Gateway<br/>Port: 3000<br/>PM2 Process]
+            M3[AI Service<br/>Port: 8000<br/>PM2 Process]
+            M4[Blockchain Service<br/>Port: 3002<br/>PM2 Process]
+            M5[Payments Service<br/>Port: 8080<br/>PM2 Process]
+        end
+        
+        subgraph "Reverse Proxy"
+            RP[Nginx<br/>Port: 80/443<br/>SSL Termination]
         end
         
         subgraph "External Services"
@@ -335,94 +339,112 @@ graph TB
     L3 --> D3
     
     %% Production connections
-    P2 --> M2
+    RP --> M2
     M2 --> M1
     M2 --> M3
     M2 --> M4
     M2 --> M5
+    M1 --> P1
+    M1 --> P2
     M1 --> P3
-    M1 --> P4
-    M1 --> P5
     M1 --> E2
+    M3 --> P1
+    M3 --> P2
+    M3 --> P3
+    M4 --> P1
+    M4 --> P2
+    M4 --> P3
     M4 --> E3
+    M5 --> P1
+    M5 --> P2
+    M5 --> P3
     M5 --> E4
     
     %% Styling
     classDef dev fill:#e3f2fd
     classDef prod fill:#e8f5e8
     classDef external fill:#fff3e0
+    classDef proxy fill:#f3e5f5
     
     class D1,D2,D3,D4,D5,L1,L2,L3 dev
     class P1,P2,P3,P4,P5,M1,M2,M3,M4,M5 prod
     class E1,E2,E3,E4 external
+    class RP proxy
 ```
 
-## 📈 Diagram 7: Monitoring & Observability
+## 📈 Diagram 7: Server Monitoring & Observability
 
 ```mermaid
 graph TB
     subgraph "Application Layer"
-        A[Astro Frontend]
-        D[React Dashboard]
-        G[API Gateway]
-        C[CMS Service]
-        AI[AI Service]
+        A[Astro Frontend<br/>Static Files]
+        D[React Dashboard<br/>PM2 Process]
+        G[API Gateway<br/>PM2 Process]
+        C[CMS Service<br/>PM2 Process]
+        AI[AI Service<br/>PM2 Process]
     end
     
     subgraph "Infrastructure Layer"
-        PG[PostgreSQL]
-        R[Redis]
-        K[Kafka]
+        PG[PostgreSQL<br/>Docker Container]
+        R[Redis<br/>Docker Container]
+        K[Kafka<br/>Docker Container]
+        N[Nginx<br/>Reverse Proxy]
     end
     
-    subgraph "Monitoring Stack"
-        M1[Prometheus<br/>Metrics Collection]
-        M2[Grafana<br/>Dashboards]
-        M3[Jaeger<br/>Distributed Tracing]
-        M4[ELK Stack<br/>Log Aggregation]
+    subgraph "Server Monitoring"
+        M1[PM2 Monitor<br/>Process Management]
+        M2[System Monitor<br/>htop/iotop]
+        M3[Log Files<br/>/var/log/coreflow/]
+        M4[Docker Stats<br/>Container Monitoring]
+    end
+    
+    subgraph "External Monitoring"
+        M5[Uptime Robot<br/>External Health Checks]
+        M6[ServerPilot<br/>Server Management]
+        M7[Cloudflare<br/>CDN + Analytics]
     end
     
     subgraph "Alerting"
-        A1[AlertManager<br/>Notification Rules]
-        A2[Slack/Email<br/>Alerts]
+        A1[PM2 Alerts<br/>Process Failures]
+        A2[Email Alerts<br/>Server Issues]
+        A3[Slack/Discord<br/>Team Notifications]
     end
     
     %% Monitoring connections
-    A -->|Metrics| M1
-    D -->|Metrics| M1
-    G -->|Metrics| M1
-    C -->|Metrics| M1
-    AI -->|Metrics| M1
+    A -->|Static Files| N
+    D -->|PM2 Logs| M3
+    G -->|PM2 Logs| M3
+    C -->|PM2 Logs| M3
+    AI -->|PM2 Logs| M3
     
-    A -->|Traces| M3
-    G -->|Traces| M3
-    C -->|Traces| M3
-    AI -->|Traces| M3
+    D -->|Process Status| M1
+    G -->|Process Status| M1
+    C -->|Process Status| M1
+    AI -->|Process Status| M1
     
-    A -->|Logs| M4
-    D -->|Logs| M4
-    G -->|Logs| M4
-    C -->|Logs| M4
-    AI -->|Logs| M4
+    PG -->|Container Stats| M4
+    R -->|Container Stats| M4
+    K -->|Container Stats| M4
     
-    PG -->|Metrics| M1
-    R -->|Metrics| M1
-    K -->|Metrics| M1
+    N -->|Access Logs| M3
+    N -->|Error Logs| M3
     
-    M1 -->|Query| M2
-    M1 -->|Alerts| A1
-    A1 -->|Notify| A2
+    M1 -->|Process Alerts| A1
+    M2 -->|System Alerts| A2
+    M5 -->|Uptime Alerts| A3
     
     %% Styling
     classDef app fill:#e1f5fe
     classDef infra fill:#f3e5f5
     classDef monitoring fill:#e8f5e8
+    classDef external fill:#fff3e0
     classDef alerting fill:#ffebee
     
     class A,D,G,C,AI app
-    class PG,R,K infra
+    class PG,R,K,N infra
     class M1,M2,M3,M4 monitoring
-    class A1,A2 alerting
+    class M5,M6,M7 external
+    class A1,A2,A3 alerting
 ```
 
 ## 🛠️ How to Use These Diagrams
