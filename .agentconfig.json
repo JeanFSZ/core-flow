@@ -3,9 +3,11 @@
   "priority_files": [
     "agent.md",
     "context.md",
+    "DEVELOPMENT-STATUS.md",
     "prompts/",
     "knowledge/",
-    "agents/"
+    "agents/",
+    ".agent/"
   ],
   "ignore_patterns": ["node_modules/", "dist/", "*.log", "tmp/"],
   "coding_guidelines": {
