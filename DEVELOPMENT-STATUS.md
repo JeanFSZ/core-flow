@@ -16,6 +16,7 @@ This document tracks the live status of features, technical standards, and the r
 - **Zero `any` Usage**: All services must use interfaces/types (Raw interfaces + Mappers).
 - **Error Standard**: All errors must match `ApiErrorResponse` interface.
 - **Transparent Proxy**: Gateway remains DTO-agnostic to minimize duplication.
+- **Review Strategy**: Mandatory unit testing and manual requirement verification via Review Agent.
 - **Verification**: `npm run lint` MUST pass before any task is considered done.
 - **Security**: Never leak Project IDs, API Keys, or Tokens in documentation.
 

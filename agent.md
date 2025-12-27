@@ -71,6 +71,7 @@ Coreflow follows an **event-driven microservice pattern**:
 - Define shared **architecture, documentation, and CI/CD standards**
 - Contain all **apps**, **libs**, and **infra** resources
 - Provide onboarding context through this `agent.md`
+- **Review Standard**: Managed by its own specialist (`agents/review-agent.md`)
 
 ### Each Microservice
 
