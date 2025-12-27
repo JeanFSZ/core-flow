@@ -7,21 +7,22 @@
     "knowledge/",
     "agents/"
   ],
-  "ignore_patterns": [
-    "node_modules/",
-    "dist/",
-    "*.log",
-    "tmp/"
-  ],
+  "ignore_patterns": ["node_modules/", "dist/", "*.log", "tmp/"],
   "coding_guidelines": {
     "primary_language": "typescript",
     "frameworks": ["nestjs", "fastapi", "springboot"],
-    "testing": ["jest", "pytest", "junit"]
+    "testing": ["jest", "pytest", "junit"],
+    "standards": [
+      "strict-typing-raw-interfaces",
+      "dto-agnostic-proxying",
+      "standardized-error-responses",
+      "mandatory-lint-on-feature-finish"
+    ]
   },
   "style": {
     "naming": "camelCase",
     "comments": "jsdoc",
-    "formatter": "prettier"
+    "formatter": "prettier",
+    "secret_management": "dotenv-only"
   }
 }
-
