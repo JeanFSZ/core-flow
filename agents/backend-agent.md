@@ -10,3 +10,8 @@
   - Always run `npm run lint` before finishing a feature.
   - Never hardcode Project IDs or tokens; use `.env`.
 - **Principles**: Modular, Event-driven, SOLID.
+
+## 🔄 Workflows
+
+- **Finish Task**: Use `/finish-task` for mandatory linting and status updates.
+- **Add Proxy**: Use `/add-proxy` when integrating new microservices.

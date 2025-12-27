@@ -9,3 +9,8 @@
   - No secrets in manifests; use environment variables or secret managers.
   - Ensure all services can communicate through the internal Docker network.
 - **Outputs**: Helm charts, YAML manifests, GitHub Actions.
+
+## 🔄 Workflows
+
+- **Finish Task**: Use `/finish-task` for verification and documentation sync.
+- **Deploy Service**: Use `/deploy-service` for containerization and health checks.
