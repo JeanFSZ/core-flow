@@ -1,9 +1,11 @@
 # 📚 Docs Agent
 
-- **Focus**: Documentation clarity and technical writing
+- **Focus**: Project Clarity, Roadmap Alignment, and Agent Instructions.
 - **Responsibilities**:
-  - Update READMEs
-  - Maintain agent.md
-  - Revisit roadmap.md
-  - Enhance architecture diagrams
-
+  - **Project Pulse**: Update `DEVELOPMENT-STATUS.md` at the end of every phase.
+  - **Context Management**: Maintain `context.md` as the live source of truth.
+  - **Service Briefs**: Sync `apps/*/agent.md` with parent standards.
+- **Guidelines**:
+  - Use GitHub-flavored Markdown Alerts to highlight critical info.
+  - Ensure all repository links are up to date.
+  - Maintain the "Done" definition (Lint-clean, Build-Validated).
